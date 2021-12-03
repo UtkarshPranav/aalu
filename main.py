@@ -151,6 +151,24 @@ def hex_dump_verbose(hex_string1:bytes, hex_string2:bytes):
                 print(colored(hex(hex_string2[i])[2:], "blue"), end='')
 
             i+=1
+            
+
+def hex_check(hex_string1:bytes, hex_string2:bytes):
+    #bool return
+    if(hex_string1 == hex_string2):
+        return True
+    else:
+        return False
+            
+def hex_hash_check(hex_string1:bytes, hex_string2:bytes, md5=1):
+
+    hex_string1_hash = hashlib.md5(hex_string1).hexdigest() 
+    hex_string2_hash = hashlib.md5(hex_string).hexdigest()
+    if(md5 == 1):
+        if(hex_string1_hash == hex_string2_hash):
+            return True, hex_string1_hash
+        else:
+            return False, hex_string1_hash, hex_string2_hash
 
 
           
