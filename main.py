@@ -109,6 +109,49 @@ def ascii_offset(string1, string2):
                 print(colored(string2[i], "blue"), end='')
             i+=1
 
+            
+            def hex_offset_check(hex_string1:bytes, hex_string2:bytes): 
+    #offset cal 0x41414141 - 0x42424242 = -16843009
+    bin_hex_string1 = int(binascii.hexlify(hex_string1), 16)
+    bin_hex_string2 = int(binascii.hexlify(hex_string2), 16)
+    return (bin_hex_string1 - bin_hex_string2)
+def hex_dump_verbose(hex_string1:bytes, hex_string2:bytes):
+    #verbose output for hex compare
+    bin_hex_string1 = binascii.hexlify(hex_string1)
+    bin_hex_string2 = binascii.hexlify(hex_string2)
+    if(bin_hex_string1 == bin_hex_string2):
+        print(colored("Twin", "green"))
+        return 0
+    print(bin_hex_string1.decode())
+    max_length = max(len(bin_hex_string1), len(bin_hex_string2))/2
+    if(len(bin_hex_string1) > len(bin_hex_string2)):
+        max_bin_hex_string = bin_hex_string1
+    else:
+        max_bin_hex_string = bin_hex_string2
+    i = 0
+    if(max_bin_hex_string == hex_string1):
+        while(i != max_length):
+            try: # for the out of index in string
+                if(hex_string1[i] == hex_string2[i]):
+                    print(colored(hex(hex_string2[i])[2:], "green"), end='')
+                else:
+                    print(colored(hex(hex_string2[i])[2:], "yellow"), end='')
+            except Exception as e:
+                print(colored("×", "red"), end='')
+
+            i+=1
+    else:
+        while(i != len(hex_string2)):
+            try: # for the out of index in string
+                if(hex_string1[i] == hex_string2[i]):
+                    print(colored(hex(hex_string2[i])[2:], "green"), end='')
+                else:
+                    print(colored(hex(hex_string2[i])[2:], "yellow"), end='')
+            except:
+                print(colored(hex(hex_string2[i])[2:], "blue"), end='')
+
+            i+=1
+
 
           
  
