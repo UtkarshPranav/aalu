@@ -165,11 +165,91 @@ def hex_hash_check(hex_string1:bytes, hex_string2:bytes, md5=1):
     hex_string1_hash = hashlib.md5(hex_string1).hexdigest() 
     hex_string2_hash = hashlib.md5(hex_string).hexdigest()
     if(md5 == 1):
-        if(hex_string1_hash == hex_string2_hash):
+        if(hex_string1_hash == hex_string2_hash):]
             return True, hex_string1_hash
         else:
             return False, hex_string1_hash, hex_string2_hash
 
+def main():
 
-          
+    first_file = None
+    second_file = None
+    first_data = None
+    second_data = None
+    files_count = 0
+    parser = argparse.ArgumentParser()
+
+
+    parser.add_argument(
+    "-m",
+    "--mode",
+    type=str,
+    help = "Select mode betweeen a(ascii) / h(hex); default: ASCII ",
+    default = 'a',
+    required = True
+    )
+    parser.add_argument("-f", "--files", nargs=2, metavar=("first_file", "second_file"), help="files to add <File> <File>", required=True)
+    parser.add_argument("-c", "--check", help = "returns boolean", action = "store_true")
+    parser.add_argument("-H", "--hash", help="check md5-hash", action = "store_true")
+    parser.add_argument("-v", "--verbose", action = "store_true")
+    parser.add_argument("-o", "--offset", help="Check the offset between two strings", action = "store_true")
+    args = parser.parse_args()
+    first_file, second_file = args.files
+    try:
+        f = open(first_file, 'rb')
+        first_data = f.read()
+        files_count +=1
+        print(1)
+    except:
+        first_data = first_file
+    try:
+        f = open(second_file, 'rb')
+        second_data = f.read()
+        file_count +=1
+    except:
+        second_data = second_file
+    if(args.mode.lower() == 'a'):
+        try:
+            first_data = first_data.decode('utf-8')
+            second_data = second_data.decode('utf-8')
+        except:
+            pass
+        # print(type(first_data), type(second_data))
+        if(args.check):
+            if(ascii_compare(first_data, second_data) == 0):
+                print("True")
+            else:
+                print("Flase")
+        if(args.verbose):
+            ascii_comapre_verbose(first_data, second_data)
+        if(args.hash):
+            res = ascii_hash(first_data, second_data)
+            if(res[0]):
+                print("Same md5digest")
+                print(res[1])
+            else:
+                ascii_comapre_verbose(res[1], res[2])
+        if(args.offset):
+            print("Note: incomparison to first_data")
+            print(ascii_offset(first_data, second_data))
+    elif(args.mode.lower() == 'h'):
+        first_data = first_data.encode()
+        second_data = second_data.encode()
+        if(args.check):
+            if(hex_check(first_data, second_data)):
+                print("Twin")
+            else:
+                print("Individual")
+        if(args.verbose):
+            hex_dump_verbose(first_data, second_data)
+        if(args.offset):
+            print(hex_offset_check(first_data, second_data))
+        if(args.hash):
+            hex_hash_check(first_data, second_data)
+    else:
+        print("Invalid Mode")
+        exit()
+main()
+
+
  
